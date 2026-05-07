@@ -14,17 +14,31 @@ The data cleaning work here is the portfolio centrepiece — not dashboards or M
 
 ---
 
-## Dataset
+## Dataset Structure
 
-| Property | Value |
-|---|---|
-| Raw rows | 82,105 |
-| Raw columns | 13 |
-| Clean rows | ~70,292 |
-| Clean columns | 19 |
-| Source | Multi-category SHEIN product listings |
-| Format | Multiple CSV files combined |
+### Raw Data
 
+The dataset consists of **21 CSV files across different SHEIN product categories**, each with slight schema variations due to scraping inconsistencies.
+
+Typical raw file structure includes:
+
+- Product title (sometimes duplicated across fields)
+- Product URL
+- Category ranking fields
+- Price (string format with currency symbols)
+- Discount (in inconsistent formats)
+- Selling proposition (text-based sales indicator)
+
+Each file contains ~3,000–4,000 records, with occasional missing or null-heavy fields depending on category.
+
+### Key Data Quality Issues in Raw Data
+
+- Inconsistent column naming across files
+- Duplicate product title fields
+- Mixed numeric and string formats in price
+- Non-standard discount formatting (e.g. "-28%", "28% off")
+- Sparse and partially missing selling data
+- Embedded structured data inside text fields
 ---
 
 ## Data Cleaning Steps
