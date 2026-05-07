@@ -95,6 +95,25 @@ Values above the 99th percentile were capped rather than dropped, preserving row
 
 ---
 
+### Cleaned Data
+
+The final dataset contains **10 engineered analytical features**, designed for downstream analysis:
+
+| Column | Description |
+|--------|-------------|
+| price | Cleaned numeric price (float) |
+| discount | Standardised discount percentage |
+| selling_proposition | Original sales text field |
+| source_file | Origin CSV file identifier |
+| color-count | Extracted categorical/count-based feature |
+| units_sold | Parsed numeric estimate of product sales |
+| units_sold_log | Log-transformed sales to reduce skew |
+| price_category | Budget / Mid-range / Premium segmentation |
+| has_discount | Binary discount indicator |
+| value_score | Custom efficiency metric (sales vs price) |
+
+The cleaned dataset expands beyond the raw schema because it transforms unstructured e-commerce text fields into structured analytical variables through feature engineering.
+
 ## Key Findings
 
 - Price distribution was strongly right-skewed before cleaning; after capping, median price settled at approximately $15–18, consistent with SHEIN's mass-market positioning
@@ -174,3 +193,13 @@ shein-product-cleaning/
 
 SHEIN E-Commerce Product Dataset  
 [kaggle.com/datasets/oleksiimartusiuk/e-commerce-data-shein](https://www.kaggle.com/datasets/oleksiimartusiuk/e-commerce-data-shein/data)
+
+
+## Potential Use Cases
+
+- Price segmentation analysis across categories
+- Discount strategy evaluation
+- Product demand proxy modeling
+- Identifying high value-for-money products
+
+- 
