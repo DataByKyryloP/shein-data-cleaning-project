@@ -8,9 +8,11 @@
 
 ## Project Overview
 
-This project takes a raw, multi-category SHEIN product dataset scraped from one of the world's largest fast-fashion e-commerce platforms and transforms it into a clean, analysis-ready dataset through systematic data cleaning, text parsing, and feature engineering. The primary deliverable is a validated dataset of ~70k products with engineered metrics suitable for product performance comparison, pricing tier analysis, and value efficiency ranking.
+This project takes a raw, multi-category SHEIN product dataset scraped from one of the world's largest fast-fashion e-commerce platforms and transforms it into a clean, analysis-ready dataset through systematic data cleaning, text parsing, and feature engineering. The primary deliverable is a validated dataset of 70,292 products with engineered metrics suitable for product performance comparison, pricing tier analysis, and value efficiency ranking.
 
 The data cleaning work here is the portfolio centrepiece — not dashboards or ML models. The raw dataset reflects real-world scraping artifacts: inconsistent text formats, mixed numeric and string fields, extreme price outliers, and duplicates. Resolving these issues cleanly and documenting each decision is the analytical skill being demonstrated.
+
+This project focuses on reproducible data cleaning workflows and feature engineering for structured analysis of real-world scraped e-commerce datasets.
 
 ---
 
@@ -60,6 +62,18 @@ The raw price distribution was heavily right-skewed with extreme outliers (likel
 
 ---
 
+## Outlier Handling
+
+Price outliers were identified using quantile analysis:
+
+- 95th percentile: ~$89.99
+- 99th percentile: ~$123.99
+- Raw max: values in the thousands (likely scraping or currency errors)
+
+Values above the 99th percentile were capped rather than dropped, preserving row count while eliminating distortion in distribution visualisations and aggregate statistics. Validated using before/after histogram comparison saved to `/visuals/`.
+
+---
+
 ## Feature Engineering
 
 Five new columns were created to enrich the analytical layer beyond the raw scraped fields:
@@ -83,21 +97,10 @@ Measures how many log-units of sales volume a product delivers per dollar of pri
 
 ---
 
-## Outlier Handling
-
-Price outliers were identified using quantile analysis:
-
-- 95th percentile: ~$89.99
-- 99th percentile: ~$123.99
-- Raw max: values in the thousands (likely scraping or currency errors)
-
-Values above the 99th percentile were capped rather than dropped, preserving row count while eliminating distortion in distribution visualisations and aggregate statistics. Validated using before/after histogram comparison saved to `/visuals/`.
-
----
-
 ### Cleaned Data
 
-The final dataset contains **10 engineered analytical features**, designed for downstream analysis:
+The final dataset contains **10 analytical columns** derived from raw scraped e-commerce data. These include both retained raw fields and engineered features used for analysis.
+
 
 | Column | Description |
 |--------|-------------|
@@ -112,7 +115,7 @@ The final dataset contains **10 engineered analytical features**, designed for d
 | has_discount | Binary discount indicator |
 | value_score | Custom efficiency metric (sales vs price) |
 
-The cleaned dataset expands beyond the raw schema because it transforms unstructured e-commerce text fields into structured analytical variables through feature engineering.
+These columns transform inconsistent scraped e-commerce data into structured analytical variables suitable for pricing and product performance analysis.
 
 ## Key Findings
 
@@ -161,14 +164,14 @@ The `value_score` metric is an analytical construct for comparative ranking with
 ## Repository Structure
 
 ```text
-shein-product-cleaning/
+shein-data-cleaning-project
 ├── README.md
 ├── data/
 │   ├── raw/
 │   │   └── https://www.kaggle.com/datasets/oleksiimartusiuk/e-commerce-data-shein/data
 │   │       (CSVs not included)
 │   └── cleaned/
-│       └── shein_clean.csv    ← 70,292 rows × 19 columns
+│       └── shein_cleaned_dataset_lite.csv    ← 70,292 rows × 19 columns
 ├── notebooks/
 │   └── 01_shein_cleaning.ipynb
 ├── visuals/
@@ -201,5 +204,3 @@ SHEIN E-Commerce Product Dataset
 - Discount strategy evaluation
 - Product demand proxy modeling
 - Identifying high value-for-money products
-
-- 
