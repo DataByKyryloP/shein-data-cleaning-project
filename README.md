@@ -171,7 +171,7 @@ shein-data-cleaning-project
 │   │   └── https://www.kaggle.com/datasets/oleksiimartusiuk/e-commerce-data-shein/data
 │   │       (CSVs not included)
 │   └── cleaned/
-│       └── shein_cleaned_dataset_lite.csv    ← 70,292 rows × 19 columns
+│       └── shein_cleaned_dataset_lite.csv    ← 70,292 rows × 10 columns
 ├── notebooks/
 │   └── 01_shein_cleaning.ipynb
 ├── visuals/
