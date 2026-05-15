@@ -57,20 +57,22 @@ The `discount` column contained string values like `"30% off"` and `"-30%"`. Str
 **4. Null handling**  
 Missing values in `price`, `discount`, and `selling_proposition` were assessed. Rows with null `price` were dropped (cannot be used in any downstream pricing analysis). Null discount treated as zero-discount rather than dropped, as absence of a discount tag is itself meaningful.
 
-**5. Outlier removal — price**  
-The raw price distribution was heavily right-skewed with extreme outliers (likely data entry errors or mislabelled currency). Prices above the 99th percentile (~$123.99) were capped. Validated using histogram comparison before and after, and manual inspection of the top 1% of values.
+**5. Outlier removal — price**
+The raw price distribution was heavily right-skewed with extreme outliers (likely data entry errors or scraping artifacts).
+Two-step filtering was applied:
+Removed impossible extreme values above $10,000
+Applied 99th percentile filtering to remove top 1% of remaining values
+
+This ensured removal of invalid entries while preserving a realistic price distribution for analysis.
 
 ---
 
 ## Outlier Handling
 
-Price outliers were identified using quantile analysis:
-
-- 95th percentile: ~$89.99
-- 99th percentile: ~$123.99
-- Raw max: values in the thousands (likely scraping or currency errors)
-
-Values above the 99th percentile were capped rather than dropped, preserving row count while eliminating distortion in distribution visualisations and aggregate statistics. Validated using before/after histogram comparison saved to `/visuals/`.
+Price outliers were addressed using a two-stage filtering approach:
+Extremely high values (>$10,000) were removed
+Remaining values above the 99th percentile (~$123.99) were filtered out
+This approach reduced distortion from scraping anomalies while maintaining a stable analytical distribution.
 
 ---
 
@@ -91,9 +93,12 @@ Grouped products into pricing tiers based on the cleaned price distribution: Bud
 Binary flag: 1 if the product carries any non-zero discount, 0 otherwise. Simple indicator useful for comparing discounted vs full-price product performance.
 
 **`value_score`**  
-Custom engineered metric:
-value_score = log(units_sold) / (price + 1)
-Measures how many log-units of sales volume a product delivers per dollar of price — a proxy for sales efficiency relative to price point. Higher value_score indicates a product that sells well despite (or because of) low price. **Important:** this is a comparative analytical metric, not a revenue or profit measure. It is intended for ranking products within a category, not for estimating actual retail value.
+value_score
+Custom engineered metric combining log-transformed sales and price:
+value_score = units_sold_log / (price + 1)
+Measures sales efficiency relative to price. Higher values indicate products that achieve higher (log-adjusted) demand at lower price points.
+
+**Important:** this is a comparative analytical metric, not a revenue or profit measure. It is intended for ranking products within a category, not for estimating actual retail value.
 
 ---
 
@@ -119,10 +124,11 @@ These columns transform inconsistent scraped e-commerce data into structured ana
 
 ## Key Findings
 
-- Price distribution was strongly right-skewed before cleaning; after capping, median price settled at approximately $15–18, consistent with SHEIN's mass-market positioning
+- Price distribution was strongly right-skewed before cleaning; after removing extreme outliers and applying 99th percentile filtering, the median price stabilized at a low single-digit
+  range, consistent with SHEIN’s mass-market positioning.
 - Units sold distribution required log transformation — raw values were dominated by a small number of viral products with 100k+ sales dwarfing the majority of the catalogue
 - Low-priced products dominate the top of the value_score ranking, confirming that SHEIN's commercial strength is in high-volume, low-margin products rather than premium pricing
-- Approximately 60–65% of products carry a discount flag, suggesting discount is the norm rather than a promotional exception across the catalogue
+- Approximately ~66% of products carry a discount flag, suggesting discounting is a default pricing strategy across the catalogue.
 
 ---
 
