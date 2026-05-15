@@ -4,6 +4,12 @@
 **Stack:** Python · Pandas · Matplotlib · VS Code · Jupyter (.ipynb)
 **Scope:** Raw scraped product data → cleaned analytical dataset with engineered features
 
+## 📄 Full Write-Up (Recommended)
+
+Read the full breakdown of this project on Medium:
+
+[Medium](https://medium.com/@databykyrylop/cleaning-80-000-scraped-shein-product-listings-a-real-world-data-cleaning-case-study-b0745c45e0a6)
+ 
 ---
 
 ## Project Overview
